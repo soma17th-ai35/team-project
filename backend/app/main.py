@@ -1,3 +1,6 @@
+
+from contextlib import asynccontextmanager
+
 import logging
 import time
 from uuid import uuid4
@@ -8,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.logging_config import configure_logging
 from app.crawled_profiles.router import router as crawled_profiles_router
+from app.core.neo4j import close_driver
 from app.users.router import router as users_router
 
 load_dotenv()
@@ -16,10 +20,18 @@ configure_logging()
 logger = logging.getLogger("app.http")
 health_logger = logging.getLogger("app.health")
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    yield
+    close_driver()
+
+
 app = FastAPI(
     title="Team Project Backend",
     description="Backend API for user CRUD, embeddings, and recommendations.",
     version="0.1.0",
+    lifespan=lifespan,
 )
 
 app.add_middleware(
