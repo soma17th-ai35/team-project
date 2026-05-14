@@ -1,10 +1,8 @@
 import { Outlet, Link, useLocation } from 'react-router';
-import { LogOut, Search, User, Users, UserCircle, Settings } from 'lucide-react';
-import { useAuth } from '../auth';
+import { Search, User, Users, UserCircle, Settings } from 'lucide-react';
 
 export default function Root() {
   const location = useLocation();
-  const { logout } = useAuth();
 
   const isActive = (path: string) => {
     if (path === '/') {
@@ -60,13 +58,6 @@ export default function Root() {
               </div>
               <span className="text-sm">홍길동</span>
             </Link>
-            <button
-              onClick={logout}
-              className="flex items-center gap-2 text-sm text-[#939598] hover:text-[#525659] transition-colors"
-            >
-              <LogOut size={18} />
-              로그아웃
-            </button>
           </div>
         </header>
 
